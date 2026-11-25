@@ -1,0 +1,92 @@
+INTERVIEWS — transcription d'interviews sur votre Mac
+=====================================================
+
+Importez l'enregistrement d'une interview : l'application le transcrit, met les
+questions de la journaliste en gras et relie chaque phrase à l'audio. Un clic sur
+une phrase, et l'enregistrement repart de cet endroit.
+
+Tout se passe sur votre Mac : pas de compte, pas d'abonnement, rien n'est envoyé
+sur internet (à part le téléchargement des modèles au premier lancement).
+
+Il faut : un Mac avec puce Apple (M1 ou plus récent), macOS 13.5 ou plus récent,
+12 Go d'espace libre, et internet pour le premier lancement.
+(Si macOS est trop ancien : Réglages Système > Général > Mise à jour de logiciels.)
+
+
+PREMIER LANCEMENT
+-----------------
+1. Placez « Interviews » où vous voulez, par exemple dans le dossier
+   Applications, et double-cliquez dessus.
+
+2. macOS va refuser de l'ouvrir la première fois, en disant qu'il ne peut pas
+   vérifier l'application. C'est normal : elle ne vient pas de l'App Store.
+   Ouvrez Réglages Système > Confidentialité et sécurité, descendez tout en bas
+   et cliquez sur « Ouvrir quand même » à côté d'Interviews, puis confirmez.
+   À faire une seule fois : ensuite elle s'ouvre par simple double-clic.
+
+3. Une fenêtre de progression s'affiche et installe ce qu'il faut : environ
+   7 Go, 15 à 45 minutes. Laissez-la travailler (vous pouvez utiliser le Mac
+   normalement pendant ce temps).
+
+4. L'application s'ouvre ensuite dans votre navigateur.
+
+
+UTILISER
+--------
+• Fermer l'onglet du navigateur ne quitte pas l'application : elle continue de
+  transcrire en arrière-plan. Pour l'arrêter vraiment, utilisez le bouton
+  « Quitter Interviews » en bas à gauche de la page.
+
+• Importer : bouton « Importer un enregistrement », ou glissez le fichier dans
+  la fenêtre. Formats : m4a (Dictaphone), mp3, wav, aiff, flac, mp4, mov.
+
+• La transcription avance en arrière-plan. Vous pouvez en importer plusieurs :
+  elles passent l'une après l'autre. Sur un Mac M1, comptez environ 40 minutes
+  pour une heure d'enregistrement (et une trentaine de secondes de préparation
+  à chaque interview) ; c'est plus rapide sur un Mac récent.
+
+• Cliquez sur une phrase ou un timecode pour écouter à partir de cet endroit.
+  Barre d'espace : lecture / pause. Flèches ← → : reculer / avancer de 5 s.
+
+• Favoris : cliquez sur une phrase, puis sur « ☆ Favori » dans la petite bulle.
+  La phrase est marquée d'une ★, et une ★ apparaît sur la barre de lecture en
+  bas, à l'endroit où elle se trouve : cliquez dessus pour y revenir. Pour
+  retirer un favori, recliquez sur la phrase puis « Retirer des favoris ».
+
+• L'application reconnaît les voix et devine qui est la journaliste (la personne
+  qui pose les questions). Si elle se trompe : « Corriger le texte », cliquez dans
+  la phrase, puis choisissez au-dessus qui la prononce. En haut de la page, vous
+  pouvez renommer « Invité 1 » avec le vrai nom et choisir qui est en gras.
+  Tout est enregistré automatiquement.
+
+• Corriger les voix : si deux personnes sont confondues (ou une personne coupée
+  en deux), passez en « Corriger le texte », choisissez le bon nombre
+  d'intervenants en haut, puis « Relancer la reconnaissance des voix ». Seule la
+  séparation des voix est refaite (environ une minute) : vos corrections de texte
+  et les noms que vous avez donnés sont conservés.
+
+• Enlever un passage : en « Corriger le texte », « Supprimer » sous le bloc
+  concerné. Le passage disparaît de la transcription et des exports ;
+  l'enregistrement audio, lui, reste complet. Une erreur ? ⌘Z (Cmd + Z) rétablit
+  le dernier bloc supprimé, même après avoir fermé la page.
+
+• Dossiers : tapez un nom dans « Dossier », sous le titre de l'interview, pour la
+  ranger (par exemple par sujet ou par article). Les dossiers existants sont
+  proposés au fur et à mesure ; l'historique, à gauche, est classé par dossier.
+
+• « Exporter » : document Word (.docx) ou texte (.txt), avec les timecodes.
+
+• Pour rouvrir l'application plus tard : double-cliquez à nouveau sur Interviews.
+  Si elle tourne déjà, cela rouvre simplement la page dans le navigateur.
+
+• Le Mac ne s'endort pas pendant une transcription, et reprend sa veille normale
+  une fois terminée.
+
+
+DÉSINSTALLER
+------------
+Mettez « Interviews » à la corbeille, puis, dans le Finder :
+Aller > Aller au dossier…, tapez  ~/.qwen-transcribe  et mettez ce dossier à la
+corbeille également (c'est là que sont les modèles, 7 Go).
+Attention : cela efface aussi l'historique des interviews. Exportez d'abord
+celles que vous voulez garder.
