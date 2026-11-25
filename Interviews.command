@@ -226,11 +226,26 @@ start_server() {  # démarre en arrière-plan, affiche le PID
   echo "$port" > "$PORT_FILE"
   cd "$APP_DIR"
   HF_HUB_OFFLINE=1 INTERVIEWS_LIBRARY="$APP_HOME/library" INTERVIEWS_MODELS="$APP_HOME/models" \
-    INTERVIEWS_ASR_MODEL="$ASR_MODEL" INTERVIEWS_APP_HOME="$APP_HOME" \
+    INTERVIEWS_ASR_MODEL="$ASR_MODEL" INTERVIEWS_APP_HOME="$APP_HOME" INTERVIEWS_VERSION="$VERSION" \
     nohup "$VENV/bin/python" -m interviews.server --port "$port" >"$SERVER_LOG" 2>&1 &
   pid=$!
   echo "$pid" > "$PID_FILE"
   echo "$pid"
+}
+
+running_version() {  # vide pour les instances d'avant la version 3, qui ne l'annonçaient pas
+  curl -s --max-time 1 "http://127.0.0.1:$1/api/health" 2>/dev/null | grep -o '"version":[0-9]*' | cut -d: -f2 || true
+}
+
+transcribing() {
+  curl -s --max-time 2 "http://127.0.0.1:$1/api/interviews" 2>/dev/null | grep -qE '"status":"(queued|processing)"'
+}
+
+stop_server() {  # seulement l'instance de ce dossier d'installation, jamais celles d'un autre
+  if [ -f "$PID_FILE" ]; then kill "$(cat "$PID_FILE")" 2>/dev/null || true; fi
+  pkill -f "$VENV/bin/python -m interviews.server" 2>/dev/null || true
+  pkill -f "$VENV/bin/python -m interviews.pipeline" 2>/dev/null || true
+  rm -f "$PORT_FILE" "$PID_FILE"
 }
 
 case "$MODE" in
@@ -262,8 +277,22 @@ case "$MODE" in
     start_server
     ;;
 
-  port)
-    if [ -f "$PORT_FILE" ] && health "$(cat "$PORT_FILE")"; then cat "$PORT_FILE"; fi
+  port)  # appelé à chaque ouverture de l'app : rouvre l'instance en cours, sauf si elle est dépassée
+    if [ -f "$PORT_FILE" ] && health "$(cat "$PORT_FILE")"; then
+      port="$(cat "$PORT_FILE")"
+      started=$(stat -f %m "$PID_FILE" 2>/dev/null || echo 0)
+      # une instance qui vient de démarrer est celle qu'on attend : pas de nouvelle vérification pour elle
+      if [ -z "${INTERVIEWS_SKIP_UPDATE:-}" ] && [ $(( $(date +%s) - started )) -gt 60 ] \
+         && ! transcribing "$port" && self_update; then
+        INTERVIEWS_DELEGATED=1 INTERVIEWS_SKIP_UPDATE=1 exec /bin/bash "$UPDATE_DIR/Interviews.command" port
+      fi
+      running="$(running_version "$port")"
+      if [ "${running:-0}" -lt "$VERSION" ] && ! transcribing "$port"; then
+        stop_server  # rien d'affiché : l'app redémarre alors la bonne version
+      else
+        echo "$port"
+      fi
+    fi
     ;;
 
   version)
@@ -271,11 +300,7 @@ case "$MODE" in
     ;;
 
   stop)
-    if [ -f "$PID_FILE" ]; then kill "$(cat "$PID_FILE")" 2>/dev/null || true; fi
-    # ceinture et bretelles : une instance lancée autrement (ancienne version, Terminal) doit partir aussi
-    pkill -f "interviews.server" 2>/dev/null || true
-    pkill -f "interviews.pipeline" 2>/dev/null || true
-    rm -f "$PORT_FILE" "$PID_FILE"
+    stop_server
     ;;
 
   all)  # usage direct dans le Terminal, pratique pour voir ce qui se passe

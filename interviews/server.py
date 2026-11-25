@@ -134,7 +134,8 @@ def shutdown() -> dict:
 
 @app.get("/api/health")
 def health() -> dict:
-    return {"app": "interviews"}
+    # the launcher compares this with its own version to restart an outdated instance
+    return {"app": "interviews", "version": int(os.environ.get("INTERVIEWS_VERSION") or 0)}
 
 
 @app.get("/api/interviews")

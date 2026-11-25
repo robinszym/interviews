@@ -45,6 +45,8 @@ assert new_speakers[2]["name"] == "Invité 2", "a voice with no match keeps its 
 
 # --- server: folder, block deletion, voices rerun ------------------------------
 client = TestClient(app)
+os.environ["INTERVIEWS_VERSION"] = "7"
+assert client.get("/api/health").json() == {"app": "interviews", "version": 7}, "the server tells its version"
 iid = store.create("Entretien.m4a", io.BytesIO(b"audio"))
 store.write_transcript(iid, {"speakers": old_speakers, "sentences": [
     {"id": i, "start": i, "end": i + 1, "text": f"Phrase {i}.", "speaker": "S0"} for i in range(4)]})
